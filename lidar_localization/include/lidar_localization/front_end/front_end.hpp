@@ -17,7 +17,8 @@
 #include "lidar_localization/models/registration/ndt_registration.hpp"
 #include "lidar_localization/models/registration/icp_registration.hpp"
 #include "lidar_localization/models/registration/opt_icp_registration.hpp"
-// #include "lidar_localization/models/registration/ceres_icp_registration.hpp"
+#include "lidar_localization/models/registration/ceres_qt_icp_registration.hpp"
+#include "lidar_localization/models/registration/ceres_se3_icp_registration.hpp"
 #include "lidar_localization/models/cloud_filter/voxel_filter.hpp"
 
 namespace lidar_localization {

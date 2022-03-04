@@ -26,9 +26,9 @@ public:
         residuals[0] = res_trans[0];
         residuals[1] = res_trans[1];
         residuals[2] = res_trans[2];
-        residuals[3] = res_qua.x();
-        residuals[4] = res_qua.y();
-        residuals[5] = res_qua.z();
+        residuals[3] = 2.0*res_qua.x();
+        residuals[4] = 2.0*res_qua.y();
+        residuals[5] = 2.0*res_qua.z();
         Eigen::Map<Eigen::Matrix<T,6,1>> res(residuals);
         res = inv_sqrt_information.cast<T>()*res;
         return true;

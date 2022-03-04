@@ -83,14 +83,15 @@ bool FrontEnd::InitRegistration(std::shared_ptr<RegistrationInterface>& registra
         registration_ptr = std::make_shared<ICPRegistration>(config_node[registration_method]);
     }else if(registration_method == "OPTICP"){
         registration_ptr = std::make_shared<OptICPRegistration>(config_node[registration_method]);
-    // }else if(registration_method == "CERESICP"){
-    //     registration_ptr = std::make_shared<CeresICPRegistration>(config_node[registration_method]);
+    }else if(registration_method == "CERESQTICP"){
+        registration_ptr = std::make_shared<CeresQtICPRegistration>(config_node[registration_method]);
+    }else if(registration_method == "CERESSE3ICP"){
+        registration_ptr = std::make_shared<CeresSE3ICPRegistration>(config_node[registration_method]);
     }
      else {
         LOG(ERROR) << "没找到与 " << registration_method << " 相对应的点云匹配方式!";
         return false;
     }
-
     return true;
 }
 

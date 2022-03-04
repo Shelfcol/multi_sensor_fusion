@@ -113,9 +113,10 @@ private:
     {
         Eigen::Matrix3f R = T.block<3,3>(0,0);
         Eigen::Vector4f fi = Eigen::Vector4f::Zero(); // 坐标点应该用齐次坐标表示，所以第四维为0
-        fi[0] = (pi_trans - qi)[0];
-        fi[1] = (pi_trans - qi)[1];
-        fi[2] = (pi_trans - qi)[2];
+        // fi[0] = (pi_trans - qi)[0];
+        // fi[1] = (pi_trans - qi)[1];
+        // fi[2] = (pi_trans - qi)[2];
+        fi.block<3,1>(0,0) = pi_trans - qi;
         Eigen::Matrix<float,4,6> Ja = Eigen::MatrixXf::Zero(4,6);
         Ja.block<3,3>(0,0) = R;
         Ja.block<3,3>(0,3) = -R*Sophus::SO3f::hat(pi).matrix();
