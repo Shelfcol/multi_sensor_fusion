@@ -7,7 +7,7 @@
 #include "glog/logging.h"
 
 #include <lidar_localization/saveMap.h>
-#include "lidar_localization/global_defination/global_defination.h"
+#include "lidar_localization/global_definition/global_definition.h"
 #include "lidar_localization/front_end/front_end_flow.hpp"
 
 using namespace lidar_localization;
@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
 
         rate.sleep();
     }
+    _front_end_flow_ptr->SaveTum();
 
     return 0;
 }

@@ -42,7 +42,7 @@ include(cmake/opencv.cmake)
 
 
 include_directories(include ${catkin_INCLUDE_DIRS})
-include(cmake/global_defination.cmake)
+include(cmake/global_definition.cmake)
 catkin_package()
 
 file(GLOB_RECURSE ALL_SRCS "*.cpp")
@@ -55,6 +55,10 @@ add_definitions(-w)
 add_executable(test_frame_node src/test_frame_node.cpp ${ALL_SRCS})
 target_link_libraries(test_frame_node ${catkin_LIBRARIES} ${ALL_TARGET_LIBRARIES})
 
+add_executable(save_pose_node src/save_pose_node.cpp ${ALL_SRCS})
+target_link_libraries(save_pose_node ${catkin_LIBRARIES} ${ALL_TARGET_LIBRARIES})
+
+
 add_executable(ceres_learning_node src/ceres_learning_node.cpp ${ALL_SRCS})
 add_dependencies(ceres_learning_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(ceres_learning_node ${catkin_LIBRARIES} ${ALL_TARGET_LIBRARIES})
@@ -64,3 +68,7 @@ target_link_libraries(ceres_learning_node ${catkin_LIBRARIES} ${ALL_TARGET_LIBRA
 add_executable(front_end_node src/front_end_node.cpp ${ALL_SRCS})
 add_dependencies(front_end_node ${catkin_EXPORTED_TARGETS} saveMap_gencpp)
 target_link_libraries(front_end_node ${catkin_LIBRARIES} ${ALL_TARGET_LIBRARIES})
+
+add_executable(lidar_gnss_cal_node src/lidar_gnss_cal_node.cpp ${ALL_SRCS})
+add_dependencies(lidar_gnss_cal_node ${catkin_EXPORTED_TARGETS})
+target_link_libraries(lidar_gnss_cal_node ${catkin_LIBRARIES} ${ALL_TARGET_LIBRARIES})

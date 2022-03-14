@@ -3,7 +3,7 @@
 
 #include "../common/read_g2o.h"
 #include "../common/slam_type.hpp"
-#include "lidar_localization/global_defination/global_defination.h"
+#include "lidar_localization/global_definition/global_definition.h"
 
 
 // 构造使用的是边信息，计算operator()时利用的是节点，代表优化变量

@@ -11,7 +11,7 @@
 #include <pcl/io/pcd_io.h>
 #include "glog/logging.h"
 
-#include "lidar_localization/global_defination/global_defination.h"
+#include "lidar_localization/global_definition/global_definition.h"
 
 namespace lidar_localization {
 FrontEnd::FrontEnd()

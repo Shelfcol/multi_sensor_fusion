@@ -7,7 +7,7 @@
 #include <pcl/common/transforms.h>
 #include "glog/logging.h"
 
-#include "lidar_localization/global_defination/global_defination.h"
+#include "lidar_localization/global_definition/global_definition.h"
 #include "lidar_localization/subscriber/cloud_subscriber.hpp"
 #include "lidar_localization/subscriber/imu_subscriber.hpp"
 #include "lidar_localization/subscriber/gnss_subscriber.hpp"
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
         if (!transform_received) {
             if (lidar_to_imu_ptr->LookupData(lidar_to_imu)) {
                 transform_received = true;
-                // LOG(INFO) << "lidar to imu transform matrix is:" << std::endl << lidar_to_imu;
+                LOG(INFO) << "lidar to imu transform matrix is:" << std::endl << lidar_to_imu;
             }
         } else {
             while (cloud_data_buff.size() > 0 && imu_data_buff.size() > 0 && gnss_data_buff.size() > 0) {

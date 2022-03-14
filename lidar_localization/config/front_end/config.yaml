@@ -1,7 +1,7 @@
 data_path: ./   # 数据存放路径
 
 # 匹配
-registration_method: CERESSE3ICP   # 选择点云匹配方法，目前支持：NDT ICP, OPTICP,CERESQTICP,CERESSE3ICP
+registration_method: NDT   # 选择点云匹配方法，目前支持：NDT ICP, OPTICP,CERESQTICP,CERESSE3ICP
 
 # 局部地图
 key_frame_distance: 2.0 # 关键帧距离

@@ -8,6 +8,7 @@
 
 #include <ros/ros.h>
 
+#include "lidar_localization/tools/pose_manager.hpp"
 #include "lidar_localization/subscriber/cloud_subscriber.hpp"
 #include "lidar_localization/subscriber/imu_subscriber.hpp"
 #include "lidar_localization/subscriber/velocity_subscriber.hpp"
@@ -16,6 +17,7 @@
 #include "lidar_localization/publisher/cloud_publisher.hpp"
 #include "lidar_localization/publisher/odometry_publisher.hpp"
 #include "lidar_localization/front_end/front_end.hpp"
+#include "lidar_localization/sensor_data/pose_data.hpp"
 
 namespace lidar_localization {
 class FrontEndFlow {
@@ -25,6 +27,7 @@ class FrontEndFlow {
     bool Run();
     bool SaveMap();
     bool PublishGlobalMap();
+    bool SaveTum();
 
   private:
     bool ReadData();
@@ -36,6 +39,7 @@ class FrontEndFlow {
     bool UpdateLaserOdometry();
     bool PublishData();
     bool SaveTrajectory();
+    
 
   private:
     std::shared_ptr<CloudSubscriber> cloud_sub_ptr_;
@@ -65,6 +69,12 @@ class FrontEndFlow {
     CloudData::CLOUD_PTR current_scan_ptr_;
     Eigen::Matrix4f gnss_odometry_ = Eigen::Matrix4f::Identity();
     Eigen::Matrix4f laser_odometry_ = Eigen::Matrix4f::Identity();
+    double time_now_;
+
+    std::vector<PoseData> gnss_pose_vec_;
+    std::vector<PoseData> laser_pose_vec_;
+
+    std::shared_ptr<PoseReadSave> pose_read_save_ptr_;
 };
 }
 

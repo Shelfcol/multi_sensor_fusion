@@ -8,7 +8,7 @@
 #include "glog/logging.h"
 
 #include "lidar_localization/tools/file_manager.hpp"
-#include "lidar_localization/global_defination/global_defination.h"
+#include "lidar_localization/global_definition/global_definition.h"
 
 namespace lidar_localization {
 FrontEndFlow::FrontEndFlow(ros::NodeHandle& nh) {
@@ -23,7 +23,7 @@ FrontEndFlow::FrontEndFlow(ros::NodeHandle& nh) {
     global_map_pub_ptr_ = std::make_shared<CloudPublisher>(nh, "global_map", 100, "map");
     laser_odom_pub_ptr_ = std::make_shared<OdometryPublisher>(nh, "laser_odom", "map", "lidar", 100);
     gnss_pub_ptr_ = std::make_shared<OdometryPublisher>(nh, "gnss", "map", "lidar", 100);
-
+    pose_read_save_ptr_ = std::make_shared<PoseReadSave>();
     front_end_ptr_ = std::make_shared<FrontEnd>();
 
     local_map_ptr_.reset(new CloudData::CLOUD());
@@ -55,6 +55,7 @@ bool FrontEndFlow::Run() {
     return true;
 }
 
+
 bool FrontEndFlow::ReadData() {
     cloud_sub_ptr_->ParseData(cloud_data_buff_);
 
@@ -71,6 +72,7 @@ bool FrontEndFlow::ReadData() {
 
     // 根据当前点云的时间，插值获取对应的IMU，velocity，gnss数据。利用点云时间进行插值之后，存储到buff队列里面
     double cloud_time = cloud_data_buff_.front().time;
+    time_now_ = cloud_time;
     bool valid_imu = IMUData::SyncData(unsynced_imu_, imu_data_buff_, cloud_time); 
     bool valid_velocity = VelocityData::SyncData(unsynced_velocity_, velocity_data_buff_, cloud_time);
     bool valid_gnss = GNSSData::SyncData(unsynced_gnss_, gnss_data_buff_, cloud_time);
@@ -219,9 +221,22 @@ bool FrontEndFlow::SaveTrajectory() {
             }
         }
     }
+    gnss_pose_vec_.emplace_back(time_now_,gnss_odometry_.cast<double>());
+    laser_pose_vec_.emplace_back(time_now_,laser_odometry_.cast<double>());
 
     return true;
 }
+
+
+bool FrontEndFlow::SaveTum() {
+    std::string gnss_path = WORK_SPACE_PATH+"/slam_data/trajectory/ground_truth_tum.txt";
+    std::string lidar_path = WORK_SPACE_PATH+"/slam_data/trajectory/laser_odom_tum.txt";
+
+    pose_read_save_ptr_->SaveTum(gnss_path,gnss_pose_vec_);
+    pose_read_save_ptr_->SaveTum(lidar_path,laser_pose_vec_);
+    return true;
+}
+
 
 bool FrontEndFlow::SaveMap() {
     return front_end_ptr_->SaveMap();
