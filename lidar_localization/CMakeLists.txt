@@ -19,6 +19,9 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation 
   std_srvs
   pcl_ros
+  ndt_omp
+  ndt_cpu
+  
 )
 
 add_service_files(
@@ -36,6 +39,7 @@ set(ALL_TARGET_LIBRARIES "")
 include(cmake/glog.cmake)
 include(cmake/YAML.cmake)
 include(cmake/ceres.cmake)
+include(cmake/g2o.cmake)
 include(cmake/eigen.cmake)
 include(cmake/geographic.cmake)
 include(cmake/opencv.cmake)
@@ -63,6 +67,9 @@ add_executable(ceres_learning_node src/ceres_learning_node.cpp ${ALL_SRCS})
 add_dependencies(ceres_learning_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(ceres_learning_node ${catkin_LIBRARIES} ${ALL_TARGET_LIBRARIES})
 
+add_executable(g2o_learning_node src/g2o_learning_node.cpp ${ALL_SRCS})
+add_dependencies(g2o_learning_node ${catkin_EXPORTED_TARGETS})
+target_link_libraries(g2o_learning_node ${catkin_LIBRARIES} ${ALL_TARGET_LIBRARIES})
 
 
 add_executable(front_end_node src/front_end_node.cpp ${ALL_SRCS})

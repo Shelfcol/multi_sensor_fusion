@@ -15,6 +15,7 @@
 
 #include "lidar_localization/sensor_data/cloud_data.hpp"
 #include "lidar_localization/models/registration/ndt_registration.hpp"
+#include "lidar_localization/models/registration/ndt_cpu_registration.hpp"
 #include "lidar_localization/models/registration/icp_registration.hpp"
 #include "lidar_localization/models/registration/opt_icp_registration.hpp"
 #include "lidar_localization/models/registration/ceres_qt_icp_registration.hpp"

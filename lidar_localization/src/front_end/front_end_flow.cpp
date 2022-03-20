@@ -35,17 +35,17 @@ bool FrontEndFlow::Run() {
     if (!ReadData()) // 读数据
         return false;
 
-    if (!InitCalibration()) 
+    if (!InitCalibration()) // 利用tf更新lidar_to_imu_
         return false;
 
-    if (!InitGNSS())
+    if (!InitGNSS()) // 用第一个GNSS的数据作为原点
         return false;
 
     while(HasData()) {
         if (!ValidData()) // 只要没找到合适的时间对应的数据，就进行while循环查找
             continue;
 
-        UpdateGNSSOdometry();
+        UpdateGNSSOdometry(); //GNSS位姿已经使用lidar_to_imu_转到激光雷达坐标系下
         if (UpdateLaserOdometry()) {
             PublishData();
             SaveTrajectory();
@@ -72,7 +72,6 @@ bool FrontEndFlow::ReadData() {
 
     // 根据当前点云的时间，插值获取对应的IMU，velocity，gnss数据。利用点云时间进行插值之后，存储到buff队列里面
     double cloud_time = cloud_data_buff_.front().time;
-    time_now_ = cloud_time;
     bool valid_imu = IMUData::SyncData(unsynced_imu_, imu_data_buff_, cloud_time); 
     bool valid_velocity = VelocityData::SyncData(unsynced_velocity_, velocity_data_buff_, cloud_time);
     bool valid_gnss = GNSSData::SyncData(unsynced_gnss_, gnss_data_buff_, cloud_time);
@@ -95,6 +94,7 @@ bool FrontEndFlow::InitCalibration() {
     static bool calibration_received = false;
     if (!calibration_received) {
         if (lidar_to_imu_ptr_->LookupData(lidar_to_imu_)) {
+            std::cout<<"lidar2imu: "<<lidar_to_imu_<<std::endl;
             calibration_received = true;
         }
     }
@@ -163,17 +163,19 @@ bool FrontEndFlow::UpdateGNSSOdometry() {
     gnss_odometry_(1,3) = current_gnss_data_.local_N;
     gnss_odometry_(2,3) = current_gnss_data_.local_U;
     gnss_odometry_.block<3,3>(0,0) = current_imu_data_.GetOrientationMatrix();
-    gnss_odometry_ *= lidar_to_imu_; // T_lidar2world = T_imu2world*T_lidar2imu
-
+    // gnss_odometry_ *= lidar_to_imu_; // T_lidar2world = T_imu2world*T_lidar2imu
+    gnss_time_now_ = current_gnss_data_.time;
     return true;
 }
 
 
 bool FrontEndFlow::UpdateLaserOdometry() {
     static bool front_end_pose_inited = false;
+    lidar_time_now_ = current_cloud_data_.time;
+
     if (!front_end_pose_inited) { // 激光雷达里程计的初始值使用组合导航得到的数据
         front_end_pose_inited = true;
-        front_end_ptr_->SetInitPose(gnss_odometry_);
+        front_end_ptr_->SetInitPose(gnss_odometry_); // 激光雷达的初始位姿使用的是组合导航的初始位姿和角度
         return front_end_ptr_->Update(current_cloud_data_, laser_odometry_);
     }
 
@@ -221,9 +223,8 @@ bool FrontEndFlow::SaveTrajectory() {
             }
         }
     }
-    gnss_pose_vec_.emplace_back(time_now_,gnss_odometry_.cast<double>());
-    laser_pose_vec_.emplace_back(time_now_,laser_odometry_.cast<double>());
-
+    gnss_pose_vec_.emplace_back(gnss_time_now_,gnss_odometry_.cast<double>());
+    laser_pose_vec_.emplace_back(lidar_time_now_,laser_odometry_.cast<double>());
     return true;
 }
 

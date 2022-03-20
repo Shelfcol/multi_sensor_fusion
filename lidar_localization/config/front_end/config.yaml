@@ -1,7 +1,7 @@
 data_path: ./   # 数据存放路径
 
 # 匹配
-registration_method: NDT   # 选择点云匹配方法，目前支持：NDT ICP, OPTICP,CERESQTICP,CERESSE3ICP
+registration_method: NDTCPU # 选择点云匹配方法，目前支持：NDT, NDTCPU, ICP, OPTICP, CERESQTICP, CERESSE3ICP
 
 # 局部地图
 key_frame_distance: 2.0 # 关键帧距离
@@ -21,7 +21,11 @@ NDT:
     step_size : 0.1
     trans_eps : 0.01
     max_iter : 30
-
+NDTCPU:
+    res : 1.0
+    step_size : 0.1
+    trans_eps : 0.01
+    max_iter : 30
 ICP:
     max_corres_dist : 0.9 # 最近点组合之间的最大距离，这里需要比local_map中的leaf_size的树值大，否则很难找到对应的点
     trans_eps : 0.01

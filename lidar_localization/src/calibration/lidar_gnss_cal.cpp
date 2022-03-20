@@ -33,7 +33,12 @@ bool LidarGnssCal::GetHandEyeABMatrix()
         Eigen::Matrix4d TB2 = gnss_pose_deq_.at(i+window_size_).T;    
         A_vec_.push_back(TA1.inverse()*TA2);
         B_vec_.push_back(TB1.inverse()*TB2);
+        // std::cout<<"A ="<<A_vec_.back()<<std::endl;
+        // std::cout<<"B ="<<B_vec_.back()<<std::endl;
+        // static int a=5;
+        // if(a--<0)  exit(0);
     }
+    std::cout<<"A size = "<<A_vec_.size()<<std::endl;
 }
 
 // 利用ceres构建残差，解决问题

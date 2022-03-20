@@ -69,7 +69,8 @@ class FrontEndFlow {
     CloudData::CLOUD_PTR current_scan_ptr_;
     Eigen::Matrix4f gnss_odometry_ = Eigen::Matrix4f::Identity();
     Eigen::Matrix4f laser_odometry_ = Eigen::Matrix4f::Identity();
-    double time_now_;
+    double lidar_time_now_;
+    double gnss_time_now_;
 
     std::vector<PoseData> gnss_pose_vec_;
     std::vector<PoseData> laser_pose_vec_;

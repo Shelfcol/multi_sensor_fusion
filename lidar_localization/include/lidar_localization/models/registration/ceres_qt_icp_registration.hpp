@@ -1,8 +1,8 @@
 #ifndef LIDAR_LOCALIZATION_MODELS_REGISTRATION_CERES_QT_REGISTRATION_HPP_
 #define LIDAR_LOCALIZATION_MODELS_REGISTRATION_CERES_QT_REGISTRATION_HPP_
 // #include "sophus/so3.h"
-#include "/home/gxf/multi-sensor-fusion/chapter_1/src/chapter_1/lidar_localization/third_party/Sophus-master/sophus/so3.hpp"
-#include "/home/gxf/multi-sensor-fusion/chapter_1/src/chapter_1/lidar_localization/third_party/Sophus-master/sophus/se3.hpp"
+#include "../../../../third_party/Sophus-master/sophus/so3.hpp"
+#include "../../../../third_party/Sophus-master/sophus/se3.hpp"
 #include "lidar_localization/models/registration/registration_interface.hpp"
 #include "lidar_localization/tools/tic_toc.hpp"
 #include <pcl/kdtree/kdtree_flann.h>
