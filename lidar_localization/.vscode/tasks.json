@@ -4,7 +4,7 @@
         {
             "label": "make build",
             "type": "shell",
-            "command": "cd ../../../../../.. ; source devel/setup.bash ; catkin build", 
+            "command": "cd /home/gxf/multi-sensor-fusion/chapter_1 ; source devel/setup.bash ; catkin build -j4", 
             "problemMatcher": [],
             "group": {
                 "kind": "build",

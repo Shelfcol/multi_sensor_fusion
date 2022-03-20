@@ -22,7 +22,6 @@ public:
     } 
     bool Run();
 
-
     // ceres 优化
     class CalibErr{
     public:
